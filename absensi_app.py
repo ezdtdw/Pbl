@@ -1,11 +1,13 @@
-from flask import Flask, render_template_string, request, redirect, url_for, session
+from flask import Flask, render_template_string, request, redirect, url_for, session, jsonify
 from flask_socketio import SocketIO
+from flask_cors import CORS
 import sqlite3, qrcode, base64, hashlib, time
 from io import BytesIO
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "supersecret"
+CORS(app)  # Enable CORS for frontend
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 DB_NAME = "absensi.db"
@@ -61,10 +63,30 @@ def init_db():
     if not c.fetchone():
         c.execute("INSERT INTO admin (username, password) VALUES (?, ?)", ("admin", "12345"))
 
+    # Sample mahasiswa data
+    c.execute("SELECT * FROM mahasiswa WHERE nim=?", ("1234567890",))
+    if not c.fetchone():
+        c.execute("INSERT INTO mahasiswa (nama, nim, kelas, password) VALUES (?, ?, ?, ?)", 
+                 ("Ahmad Rizki Pratama", "1234567890", "TRPL-2B", "password123"))
+    
+    c.execute("SELECT * FROM mahasiswa WHERE nim=?", ("0987654321",))
+    if not c.fetchone():
+        c.execute("INSERT INTO mahasiswa (nama, nim, kelas, password) VALUES (?, ?, ?, ?)", 
+                 ("Siti Nurhaliza", "0987654321", "TRPL-2A", "password123"))
+
     conn.commit()
     conn.close()
 
 init_db()
+
+# 🔹 Serve frontend pages
+@app.route('/')
+def serve_frontend():
+    return app.send_static_file('frontend/pages/user/index.html')
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return app.send_static_file(filename)
 
 # 🔹 QR generator
 def generate_token():
@@ -80,6 +102,15 @@ def generate_qr_base64(token):
     img.save(buf, format="PNG")
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("utf-8")
 
+@app.route('/api/qrcode')
+def generate_qr():
+    data = "absensi_sesi_2025"
+    img = qrcode.make(data)
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    return jsonify({"qr_code": qr_base64})
+
 def qr_updater():
     last_token = None
     while True:
@@ -91,9 +122,9 @@ def qr_updater():
         socketio.sleep(1)
 
 # -------------------------------
-# 🔹 Halaman TV untuk menampilkan QR
-@app.route('/')
-def index():
+# 🔹 Halaman QR realtime
+@app.route('/tv')
+def tv_display():
     return render_template_string("""
     <h2>QR Absensi Realtime</h2>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
@@ -139,7 +170,42 @@ def mahasiswa_register():
     </form>
     """
 
-# 🔹 Mahasiswa Login
+# 🔹 API Login Mahasiswa (frontend)
+@app.route('/api/mahasiswa/login', methods=['POST'])
+def api_mahasiswa_login():
+    try:
+        data = request.get_json()
+        nim = data.get('nim')
+        password = data.get('password')
+        
+        if not nim or not password:
+            return jsonify({'success': False, 'message': 'NIM dan password harus diisi'}), 400
+        
+        conn = sqlite3.connect(DB_NAME)
+        c = conn.cursor()
+        c.execute("SELECT * FROM mahasiswa WHERE nim=? AND password=?", (nim, password))
+        user = c.fetchone()
+        conn.close()
+        
+        if user:
+            student_data = {
+                'id': user[0],
+                'nama': user[1],
+                'nim': user[2],
+                'kelas': user[3]
+            }
+            return jsonify({
+                'success': True, 
+                'message': 'Login berhasil',
+                'data': student_data
+            })
+        else:
+            return jsonify({'success': False, 'message': 'NIM atau password salah'}), 401
+            
+    except Exception:
+        return jsonify({'success': False, 'message': 'Terjadi kesalahan server'}), 500
+
+# 🔹 Mahasiswa Login Web
 @app.route('/mahasiswa/login', methods=['GET','POST'])
 def mahasiswa_login():
     if request.method == 'POST':
@@ -209,7 +275,6 @@ def absen():
 
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-    # cari sesi aktif
     c.execute("SELECT * FROM sesi_absen WHERE status='open'")
     sesi = c.fetchone()
     if not sesi:
@@ -220,7 +285,6 @@ def absen():
     sesi_id = sesi[0]
     waktu = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # cek apakah sudah absen di sesi ini
     c.execute("SELECT * FROM absensi WHERE mahasiswa_id=? AND sesi_id=?", (mahasiswa_id, sesi_id))
     if c.fetchone():
         conn.close()
@@ -239,7 +303,7 @@ def mahasiswa_logout():
     return redirect(url_for("mahasiswa_login"))
 
 # -------------------------------
-# 🔹 Admin Login
+# 🔹 Admin Login (form web)
 @app.route('/admin/login', methods=['GET','POST'])
 def admin_login():
     if request.method == 'POST':
@@ -264,7 +328,29 @@ def admin_login():
     </form>
     """
 
-# 🔹 Admin buka/tutup sesi
+# 🔹 API Login Admin (untuk frontend modern)
+@app.route('/api/admin/login', methods=['POST'])
+def api_admin_login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    admin_user = "admin"
+    admin_pass_hash = hashlib.sha256("12345".encode()).hexdigest()
+
+    if username == admin_user and hashlib.sha256(password.encode()).hexdigest() == admin_pass_hash:
+        return jsonify({
+            "success": True,
+            "message": "Login berhasil",
+            "token": "ADMIN-SESSION-TRPL-2025"
+        })
+    else:
+        return jsonify({
+            "success": False,
+            "message": "Username atau password salah"
+        }), 401
+
+# 🔹 Admin kelola sesi absensi
 @app.route('/admin/sesi', methods=['GET','POST'])
 def admin_sesi():
     if 'admin' not in session:

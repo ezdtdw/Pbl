@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin - Sistem Absensi TRPL</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script defer src="./js/auth.js"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-blue-800 flex items-center justify-center min-h-screen">
+  <div class="bg-white rounded-2xl shadow-xl w-[90%] md:w-[400px] p-8 text-center">
+    <h1 class="text-2xl font-bold mb-2 text-gray-800">Login Admin</h1>
+    <p class="text-sm text-gray-500 mb-6">Masuk untuk mengelola absensi mahasiswa</p>
+
+    <form id="adminLoginForm" class="flex flex-col space-y-4">
+      <input type="text" id="username" placeholder="Username" class="border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-300" required>
+      <input type="password" id="password" placeholder="Password" class="border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-300" required>
+      <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition">Masuk</button>
+    </form>
+
+    <p class="text-sm text-gray-400 mt-6">© 2025 Sistem Absensi TRPL</p>
+  </div>
+</body>
+</html>
