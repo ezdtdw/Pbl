@@ -5,7 +5,10 @@
   const loading = document.getElementById('loadingOverlay');
   const rememberMe = document.getElementById('rememberMe');
 
-  const API_BASE = "http://127.0.0.1:5000";
+  // ✅ Deteksi otomatis: localhost atau domain hosting
+  const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:5000"
+    : "https://payabsen.my.id";
 
   window.addEventListener("load", () => {
     const frame = document.getElementById("politanivideo");
@@ -19,7 +22,6 @@
   }
 
   function nimFormatValid(nim) {
-    // h233600439 atau 1234567890
     return /^[a-zA-Z]?\d{6,10}$/.test(nim);
   }
 
@@ -34,7 +36,6 @@
   nimInput?.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') passInput?.focus();
   });
-  
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -81,7 +82,7 @@
     } catch (err) {
       showLoading(false);
       console.error(err);
-      alert('Gagal terhubung ke server backend. Pastikan Flask berjalan di http://127.0.0.1:5000');
+      alert(`Gagal terhubung ke server backend di ${API_BASE}`);
     }
   });
 })();
