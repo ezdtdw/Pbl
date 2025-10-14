@@ -1,7 +1,9 @@
 /* reset kecil */
 *,
 *::before,
-*::after { box-sizing: border-box; }
+*::after {
+  box-sizing: border-box;
+}
 
 .gradient-bg {
   background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
@@ -18,29 +20,49 @@
 
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.floating-icon { animation: float 3s ease-in-out infinite; }
+.floating-icon {
+  animation: float 3s ease-in-out infinite;
+}
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-10px); }
+  50% { transform: translateY(-10px); }
 }
 
-/* tambahan untuk video background */
+/* === FULLSCREEN VIDEO BACKGROUND === */
 .video-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
   overflow: hidden;
+  z-index: -1;
 }
 
+/* iframe disesuaikan agar selalu memenuhi layar penuh */
 .video-bg iframe {
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
   pointer-events: none;
+  border: none;
+}
+
+/* Overlay lembut agar teks tetap terbaca */
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 20, 60, 0.35);
+  z-index: 0;
 }
