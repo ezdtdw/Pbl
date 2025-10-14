@@ -1,38 +1,11 @@
-/* reset kecil */
+/* === RESET & DASAR === */
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.gradient-bg {
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
-}
+body { font-family: 'Inter', sans-serif; }
 
-.glass-effect {
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.login-animation {
-  animation: slideUp 0.6s ease-out;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.floating-icon {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-/* === FULLSCREEN VIDEO BACKGROUND === */
+/* === VIDEO BACKGROUND FULLSCREEN === */
 .video-bg {
   position: fixed;
   top: 0;
@@ -40,29 +13,50 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: -1;
+  z-index: -2;
 }
 
-/* iframe disesuaikan agar selalu memenuhi layar penuh */
 .video-bg iframe {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 120%;
-  height: 120%;
+  width: 177.77vh;
+  height: 100vh;
+  min-width: 100vw;
+  min-height: 56.25vw;
   transform: translate(-50%, -50%);
   object-fit: cover;
   pointer-events: none;
   border: none;
 }
 
-/* Overlay lembut agar teks tetap terbaca */
+/* === OVERLAY GRADASI === */
 .video-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 20, 60, 0.35);
-  z-index: 0;
+  background: linear-gradient(to right, rgba(0, 10, 40, 0.7) 0%, rgba(0, 10, 40, 0.2) 50%, rgba(0, 10, 40, 0.6) 100%);
+  z-index: -1;
+}
+
+/* === EFEK KHUSUS === */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.login-animation { animation: slideUp 0.6s ease-out; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.floating-icon { animation: float 3s ease-in-out infinite; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
 }
