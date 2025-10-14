@@ -5,8 +5,14 @@
   const loading = document.getElementById('loadingOverlay');
   const rememberMe = document.getElementById('rememberMe');
 
-  // ✅ ARAHKAN KE BACKEND FLASK (5000), BUKAN 5501/5002
   const API_BASE = "http://127.0.0.1:5000";
+
+  window.addEventListener("load", () => {
+    const frame = document.getElementById("politanivideo");
+    if (frame) {
+      frame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+    }
+  });
 
   function showLoading(on) {
     loading.classList.toggle('hidden', !on);
@@ -28,6 +34,7 @@
   nimInput?.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') passInput?.focus();
   });
+  
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
