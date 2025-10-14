@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan QR Code - Sistem Absensi TRPL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Library QR Scanner -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
+  <!-- Header -->
+  <header class="w-full max-w-2xl flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">📷 Scan QR Code</h1>
+    <a href="./dashboard.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">← Dashboard</a>
+  </header>
+
+  <!-- QR Scanner -->
+  <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-2xl text-center">
+    <div id="reader" class="mx-auto w-full rounded-lg overflow-hidden"></div>
+    <p id="scan-result" class="mt-4 text-gray-700 text-lg font-medium">Arahkan kamera ke QR Code</p>
+    <button id="stopScan" class="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg hidden">
+      Hentikan Scan
+    </button>
+  </div>
+
+  <script src="../../js/qr_scan.js"></script>
+</body>
+</html>

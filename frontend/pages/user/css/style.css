@@ -27,3 +27,20 @@
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
 }
+
+/* tambahan untuk video background */
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.video-bg iframe {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}

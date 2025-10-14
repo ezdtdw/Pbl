@@ -4,33 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sistem Absensi TRPL - Dashboard</title>
-
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Style khusus kita -->
   <link rel="stylesheet" href="../../css/style.css" />
 </head>
 <body class="gradient-bg min-h-screen p-4 relative overflow-hidden">
-  <!-- Background Pattern -->
-  <div class="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
     <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
-        </pattern>
-      </defs>
+      <defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0L0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs>
       <rect width="100" height="100" fill="url(#grid)" />
     </svg>
   </div>
 
-  <!-- Header -->
   <header class="relative z-10 mb-8">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       <div class="flex items-center space-x-4">
         <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
           <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
           </svg>
         </div>
         <div>
@@ -38,7 +28,7 @@
           <p class="text-white opacity-80">Dashboard Mahasiswa</p>
         </div>
       </div>
-      <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+      <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
         </svg>
@@ -47,9 +37,7 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="relative z-10 max-w-7xl mx-auto">
-    <!-- Welcome Card -->
     <div class="glass-effect rounded-2xl shadow-2xl p-8 mb-8">
       <div class="flex items-center justify-between">
         <div>
@@ -67,15 +55,11 @@
       </div>
     </div>
 
-    <!-- Action Cards -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <!-- Scan QR Code -->
-      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="openQRScanner()">
+      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="window.location.href='./qr_scan.html'">
         <div class="flex items-center space-x-4">
           <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
-            </svg>
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
           </div>
           <div>
             <h3 class="text-xl font-bold text-gray-800">Scan QR Code</h3>
@@ -84,13 +68,10 @@
         </div>
       </div>
 
-      <!-- Riwayat Absensi -->
-      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="showAttendanceHistory()">
+      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="window.location.href='./riwayat.html'">
         <div class="flex items-center space-x-4">
           <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-            </svg>
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>
           </div>
           <div>
             <h3 class="text-xl font-bold text-gray-800">Riwayat Absensi</h3>
@@ -99,13 +80,10 @@
         </div>
       </div>
 
-      <!-- Profil -->
-      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="showProfile()">
+      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="window.location.href='./profil.html'">
         <div class="flex items-center space-x-4">
           <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
           </div>
           <div>
             <h3 class="text-xl font-bold text-gray-800">Profil</h3>
@@ -114,44 +92,8 @@
         </div>
       </div>
     </div>
-
-    <!-- Recent Activity -->
-    <div class="glass-effect rounded-2xl shadow-2xl p-8">
-      <h3 class="text-2xl font-bold text-gray-800 mb-6">Aktivitas Terbaru</h3>
-      <div id="recentActivity" class="space-y-4">
-        <!-- Activity items will be loaded here -->
-        <div class="text-center text-gray-500 py-8">
-          <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-          </svg>
-          <p>Belum ada aktivitas terbaru</p>
-        </div>
-      </div>
-    </div>
   </main>
 
-  <!-- QR Scanner Modal -->
-  <div id="qrModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
-      <div class="text-center">
-        <h3 class="text-2xl font-bold text-gray-800 mb-4">Scan QR Code</h3>
-        <div class="w-64 h-64 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
-          <p class="text-gray-500">Camera akan muncul di sini</p>
-        </div>
-        <p class="text-gray-600 mb-6">Arahkan kamera ke QR code untuk absen</p>
-        <div class="flex space-x-4">
-          <button onclick="closeQRModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors">
-            Batal
-          </button>
-          <button onclick="startQRScan()" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors">
-            Mulai Scan
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Script khusus halaman ini -->
   <script defer src="../../js/dashboard.js"></script>
 </body>
 </html>

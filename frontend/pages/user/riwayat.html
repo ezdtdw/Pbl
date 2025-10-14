@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Riwayat Absensi - Sistem Absensi TRPL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-3xl font-bold mb-6">Riwayat Absensi</h1>
+  <div class="bg-white rounded-xl shadow p-6">
+    <table class="min-w-full text-sm">
+      <thead>
+        <tr class="border-b">
+          <th class="p-2">Tanggal</th>
+          <th class="p-2">Jam Masuk</th>
+          <th class="p-2">Status</th>
+        </tr>
+      </thead>
+      <tbody id="riwayatBody">
+        <tr><td class="p-2">12 Oktober 2025</td><td class="p-2">07:59</td><td class="p-2 text-green-600 font-medium">Hadir</td></tr>
+        <tr><td class="p-2">11 Oktober 2025</td><td class="p-2">08:03</td><td class="p-2 text-red-600 font-medium">Terlambat</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <a href="./dashboard.html" class="mt-8 inline-block text-blue-600 hover:underline">← Kembali ke Dashboard</a>
+</body>
+</html>
