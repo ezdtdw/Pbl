@@ -5,26 +5,152 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scan QR Code - Sistem Absensi TRPL</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Library QR Scanner -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
-  <!-- Header -->
-  <header class="w-full max-w-2xl flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">📷 Scan QR Code</h1>
-    <a href="./dashboard.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">← Dashboard</a>
-  </header>
 
-  <!-- QR Scanner -->
-  <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-2xl text-center">
-    <div id="reader" class="mx-auto w-full rounded-lg overflow-hidden"></div>
-    <p id="scan-result" class="mt-4 text-gray-700 text-lg font-medium">Arahkan kamera ke QR Code</p>
-    <button id="stopScan" class="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg hidden">
-      Hentikan Scan
-    </button>
+  <style>
+    html, body {
+      height: auto;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    body {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .floating-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen p-4 relative overflow-x-hidden text-gray-800">
+
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-5 pointer-events-none">
+    <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M10 0L0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="100" height="100" fill="url(#grid)" />
+    </svg>
   </div>
 
-  <script src="../../js/qr_scan.js"></script>
+  <!-- Floating Elements -->
+  <div class="absolute top-20 left-10 w-20 h-20 bg-white opacity-10 rounded-full floating-animation"></div>
+  <div class="absolute top-40 right-20 w-16 h-16 bg-white opacity-10 rounded-full floating-animation" style="animation-delay:-2s;"></div>
+  <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-white opacity-10 rounded-full floating-animation" style="animation-delay:-4s;"></div>
+
+  <!-- Header -->
+  <header class="relative z-10 mb-8 pt-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="glass-effect rounded-2xl p-6 shadow-xl flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">Sistem Absensi TRPL</h1>
+            <p class="text-gray-600 font-medium">Scan QR Code</p>
+          </div>
+        </div>
+        <a href="./dashboard.html" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-xl shadow-md hover:scale-105 transition-all">
+          ← Dashboard
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- QR Scanner Card -->
+  <main class="relative z-10 max-w-4xl mx-auto space-y-8 pb-16">
+    <div class="glass-effect rounded-2xl shadow-2xl p-8 card-hover text-center">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">📷 Arahkan Kamera ke QR Code</h2>
+      <div id="reader" class="mx-auto w-full max-w-md rounded-xl overflow-hidden border border-gray-300"></div>
+      <p id="scan-result" class="mt-4 text-gray-700 text-lg font-medium">Menunggu hasil scan...</p>
+
+      <div class="mt-6 flex justify-center gap-4">
+        <button id="startScan" class="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2 rounded-xl shadow-lg">
+          🔍 Mulai Scan
+        </button>
+        <button id="stopScan" class="bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-2 rounded-xl shadow-lg hidden">
+          🛑 Hentikan Scan
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let html5QrCode;
+    const qrRegionId = "reader";
+    const scanResult = document.getElementById("scan-result");
+    const startBtn = document.getElementById("startScan");
+    const stopBtn = document.getElementById("stopScan");
+
+    async function startScanner() {
+      try {
+        const devices = await Html5Qrcode.getCameras();
+        if (devices && devices.length) {
+          const cameraId = devices[0].id; // kamera belakang (default)
+          html5QrCode = new Html5Qrcode(qrRegionId);
+
+          await html5QrCode.start(
+            cameraId,
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            qrCodeMessage => {
+              scanResult.innerHTML = `<span class="text-green-600 font-semibold">✅ QR Code Terdeteksi:</span><br>${qrCodeMessage}`;
+              html5QrCode.stop();
+              stopBtn.classList.add("hidden");
+              startBtn.classList.remove("hidden");
+            },
+            errorMessage => {
+              console.warn("QR tidak terbaca:", errorMessage);
+            }
+          );
+
+          scanResult.textContent = "🔍 Sedang memindai...";
+          startBtn.classList.add("hidden");
+          stopBtn.classList.remove("hidden");
+        } else {
+          alert("Tidak ada kamera terdeteksi di perangkat Anda.");
+        }
+      } catch (err) {
+        alert("Gagal mengakses kamera. Pastikan izin kamera diaktifkan!");
+        console.error(err);
+      }
+    }
+
+    async function stopScanner() {
+      if (html5QrCode) {
+        await html5QrCode.stop();
+        html5QrCode.clear();
+        scanResult.textContent = "🕓 Pemindaian dihentikan.";
+        startBtn.classList.remove("hidden");
+        stopBtn.classList.add("hidden");
+      }
+    }
+
+    startBtn.addEventListener("click", startScanner);
+    stopBtn.addEventListener("click", stopScanner);
+  </script>
 </body>
 </html>

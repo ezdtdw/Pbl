@@ -18,26 +18,20 @@
 <body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-transparent">
 
   <!-- 🎬 Background Video -->
-<div class="relative w-full h-screen overflow-hidden">
-  <iframe
-    id="politanivideo"
-    src="https://www.youtube.com/embed/cdiQjS7n0fc?autoplay=1&mute=1&loop=1&playlist=cdiQjS7n0fc&controls=0&showinfo=0&modestbranding=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playsinline=1"
-    title="VIDEO PROFIL POLITEKNIK PERTANIAN NEGERI SAMARINDA 2025"
-    frameborder="0"
-    allow="autoplay; fullscreen"
-    allowfullscreen
-    class="absolute inset-0 w-full h-full object-cover pointer-events-none"
-    referrerpolicy="strict-origin-when-cross-origin">
-  </iframe>
+  <div class="absolute inset-0 w-full h-full overflow-hidden">
+    <iframe
+      src="https://www.youtube-nocookie.com/embed/cdiQjS7n0fc?autoplay=1&mute=1&loop=1&playlist=cdiQjS7n0fc&controls=0&modestbranding=1&showinfo=0&rel=0&fs=0&disablekb=1&iv_load_policy=3&playsinline=1"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      class="absolute top-1/2 left-1/2 w-[120%] h-[120%] transform -translate-x-1/2 -translate-y-1/2 object-cover pointer-events-none">
+    </iframe>
+    <div class="absolute inset-0 bg-black/30"></div> <!-- Overlay agar kontras -->
   </div>
-
-  <!-- Overlay gradasi biru agar teks terlihat -->
-  <div class="video-overlay"></div>
 
   <!-- Konten utama -->
   <div class="w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 items-center relative z-10">
-    
-    <!-- Kiri -->
+
+    <!-- 🔹 Kiri -->
     <div class="hidden lg:flex flex-col items-center justify-center text-white space-y-6">
       <div class="floating-icon">
         <svg class="w-32 h-32 mb-6" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,9 +52,11 @@
       <p class="text-xl text-center opacity-90 drop-shadow">Absensi Modern Berbasis QR Code</p>
     </div>
 
-    <!-- Kanan -->
+    <!-- 🔹 Kanan -->
     <div class="w-full max-w-md mx-auto">
-      <div class="glass-effect rounded-2xl shadow-2xl p-8 login-animation bg-white/90 backdrop-blur-lg">
+      <div class="rounded-2xl shadow-2xl p-8 login-animation bg-white/90 backdrop-blur-lg">
+
+        <!-- Header -->
         <div class="text-center mb-8">
           <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -71,6 +67,7 @@
           <p class="text-gray-600">Gunakan akun SIA untuk mengakses sistem absensi</p>
         </div>
 
+        <!-- Form -->
         <form id="loginForm" class="space-y-6" novalidate>
           <div>
             <label for="nim" class="block text-sm font-medium text-gray-700 mb-2">Nomor Induk Mahasiswa (NIM)</label>
@@ -106,12 +103,18 @@
 
           <button type="submit"
             class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 font-medium flex items-center justify-center space-x-2">
-            <span>Masuk ke Dashboard</span>
+            <span>LOGIN</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
             </svg>
           </button>
         </form>
+
+        <div class="mt-4 text-center">
+          <p class="text-gray-600">Belum punya akun?
+            <a href="register.html" class="text-blue-600 hover:text-blue-800 font-semibold">Daftar di sini</a>
+          </p>
+        </div>
 
         <div class="mt-8 text-center">
           <p class="text-xs text-gray-500">© 2025 Sistem Absensi TRPL. Semua hak dilindungi.</p>

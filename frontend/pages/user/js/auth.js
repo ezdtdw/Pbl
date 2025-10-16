@@ -6,9 +6,11 @@
   const rememberMe = document.getElementById('rememberMe');
 
   // ✅ Deteksi otomatis: localhost atau domain hosting
+  /*
   const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://127.0.0.1:5000"
     : "https://payabsen.my.id";
+  */
 
   window.addEventListener("load", () => {
     const frame = document.getElementById("politanivideo");
@@ -46,7 +48,12 @@
     if (!nim || !password) return alert('Mohon lengkapi semua field!');
     if (!nimFormatValid(nim)) return alert('Format NIM tidak valid! (contoh: h233600439 atau 1234567890)');
 
-    showLoading(true);
+    // showLoading(true);
+
+    // ===========================
+    // 🔻 BACKEND LOGIN DINONAKTIFKAN 🔻
+    // ===========================
+    /*
     try {
       const res = await fetch(`${API_BASE}/api/mahasiswa/login`, {
         method: 'POST',
@@ -84,5 +91,28 @@
       console.error(err);
       alert(`Gagal terhubung ke server backend di ${API_BASE}`);
     }
+    */
+
+    // ===========================
+    // ✅ SIMULASI LOGIN LOKAL
+    // ===========================
+    const dummyData = {
+      id: 1,
+      nim: nim,
+      nama: "Mahasiswa TRPL",
+      kelas: "TRPL 2A",
+      email: `${nim}@student.ac.id`
+    };
+
+    localStorage.setItem('studentData', JSON.stringify(dummyData));
+    localStorage.setItem('isLoggedIn', 'true');
+
+    try {
+      if (rememberMe?.checked) localStorage.setItem('remember_nim', nim);
+      else localStorage.removeItem('remember_nim');
+    } catch (_) {}
+
+    alert(`Login berhasil! Selamat datang ${dummyData.nama} di Sistem Absensi TRPL.`);
+    window.location.href = '/frontend/pages/user/dashboard.html';
   });
 })();

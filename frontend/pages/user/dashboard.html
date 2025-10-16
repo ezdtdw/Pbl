@@ -5,95 +5,151 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sistem Absensi TRPL - Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="../../css/style.css" />
+
+  <style>
+    html, body {
+      height: auto;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    body {
+      box-sizing: border-box;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .floating-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
 </head>
-<body class="gradient-bg min-h-screen p-4 relative overflow-hidden">
-  <div class="absolute inset-0 opacity-10 pointer-events-none">
+
+<body class="gradient-bg min-h-screen p-4 relative overflow-x-hidden">
+
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-5 pointer-events-none">
     <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0L0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs>
+      <defs>
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M10 0L0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+        </pattern>
+      </defs>
       <rect width="100" height="100" fill="url(#grid)" />
     </svg>
   </div>
 
-  <header class="relative z-10 mb-8">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <div class="flex items-center space-x-4">
-        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-          <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold text-white">Sistem Absensi TRPL</h1>
-          <p class="text-white opacity-80">Dashboard Mahasiswa</p>
+  <!-- Floating Elements -->
+  <div class="absolute top-20 left-10 w-20 h-20 bg-white opacity-10 rounded-full floating-animation"></div>
+  <div class="absolute top-40 right-20 w-16 h-16 bg-white opacity-10 rounded-full floating-animation" style="animation-delay:-2s;"></div>
+  <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-white opacity-10 rounded-full floating-animation" style="animation-delay:-4s;"></div>
+
+  <!-- Header -->
+  <header class="relative z-10 mb-8 pt-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="glass-effect rounded-2xl p-6 shadow-xl">
+        <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div class="flex items-center space-x-4">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
+              </svg>
+            </div>
+            <div>
+              <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Sistem Absensi TRPL</h1>
+              <p class="text-gray-600 font-medium">Dashboard Mahasiswa</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="hidden md:block text-right">
+              <p class="text-sm text-gray-500">Selamat datang kembali</p>
+              <p class="text-lg font-semibold text-gray-800" id="studentName">Mahasiswa TRPL</p>
+            </div>
+            <button id="logoutBtn" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-xl flex items-center space-x-2 shadow-lg transition-all duration-300 hover:shadow-xl">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+              <span class="font-medium">Logout</span>
+            </button>
+          </div>
         </div>
       </div>
-      <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-        </svg>
-        <span>Logout</span>
-      </button>
     </div>
   </header>
 
-  <main class="relative z-10 max-w-7xl mx-auto">
-    <div class="glass-effect rounded-2xl shadow-2xl p-8 mb-8">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-3xl font-bold text-gray-800 mb-2" id="welcomeName">Selamat Datang!</h2>
-          <div class="text-gray-600 space-y-1">
-            <p><span class="font-medium">NIM:</span> <span id="studentNim">-</span></p>
-            <p><span class="font-medium">Kelas:</span> <span id="studentKelas">-</span></p>
-            <p><span class="font-medium">Email:</span> <span id="studentEmail">-</span></p>
-          </div>
-        </div>
-        <div class="text-right">
-          <p class="text-sm text-gray-500">Terakhir login</p>
-          <p class="text-lg font-medium text-gray-800" id="lastLogin">-</p>
-        </div>
+  <!-- Main -->
+  <main class="relative z-10 max-w-7xl mx-auto space-y-8 pb-16">
+
+    <!-- Aksi Cepat -->
+    <div class="glass-effect rounded-2xl p-8 card-hover">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6">Aksi Cepat</h3>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <button id="scanQRBtn" class="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-6 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105">
+          <p class="font-bold text-lg">Scan QR Code</p>
+          <p class="text-blue-100 text-sm">Absen sekarang</p>
+        </button>
+        <button id="historyBtn" class="bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-6 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105">
+          <p class="font-bold text-lg">Riwayat Absensi</p>
+          <p class="text-green-100 text-sm">Lihat kehadiran</p>
+        </button>
+        <button id="scheduleBtn" class="bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white p-6 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105">
+          <p class="font-bold text-lg">Jadwal Kuliah</p>
+          <p class="text-purple-100 text-sm">Lihat jadwal</p>
+        </button>
       </div>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="window.location.href='./qr_scan.html'">
-        <div class="flex items-center space-x-4">
-          <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
-          </div>
-          <div>
-            <h3 class="text-xl font-bold text-gray-800">Scan QR Code</h3>
-            <p class="text-gray-600">Absen dengan scan QR code</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="window.location.href='./riwayat.html'">
-        <div class="flex items-center space-x-4">
-          <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>
-          </div>
-          <div>
-            <h3 class="text-xl font-bold text-gray-800">Riwayat Absensi</h3>
-            <p class="text-gray-600">Lihat history absensi</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass-effect rounded-2xl shadow-2xl p-6 hover:shadow-3xl transition-shadow cursor-pointer" onclick="window.location.href='./profil.html'">
-        <div class="flex items-center space-x-4">
-          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          </div>
-          <div>
-            <h3 class="text-xl font-bold text-gray-800">Profil</h3>
-            <p class="text-gray-600">Kelola data pribadi</p>
-          </div>
-        </div>
-      </div>
-    </div>
   </main>
 
-  <script defer src="../../js/dashboard.js"></script>
+  <script>
+    // 🔹 Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      notification.textContent = 'Logout berhasil! Terima kasih.';
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 3000);
+      localStorage.clear();
+
+      // ✅ arahkan balik ke halaman utama
+      setTimeout(() => (window.location.href = '../../../index.html'), 1500);
+    });
+
+    // 🔹 Load user data dari localStorage
+    window.addEventListener('DOMContentLoaded', () => {
+      const data = JSON.parse(localStorage.getItem('studentData'));
+      if (data) {
+        document.getElementById('studentName').textContent = data.nama;
+      }
+    });
+
+    // 🔹 Tombol Aksi Cepat → langsung arahkan ke file masing-masing
+    document.getElementById('scanQRBtn').addEventListener('click', () => {
+      window.location.href = 'qr_scan.html'; // ✅ ke halaman QR Scan
+    });
+
+    document.getElementById('historyBtn').addEventListener('click', () => {
+      window.location.href = 'riwayat.html'; // ✅ ke halaman Riwayat Absensi
+    });
+
+    document.getElementById('scheduleBtn').addEventListener('click', () => {
+      window.location.href = 'profil.html'; // ✅ ke halaman Jadwal (sementara profil)
+    });
+  </script>
 </body>
 </html>
